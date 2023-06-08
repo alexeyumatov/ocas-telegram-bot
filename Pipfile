@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 aiogram = "*"
+apscheduler = "==3.10.1"
 
 [dev-packages]
 requests = "*"

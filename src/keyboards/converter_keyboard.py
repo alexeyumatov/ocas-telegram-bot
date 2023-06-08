@@ -23,7 +23,7 @@ async def make_keyboard(user_id) -> InlineKeyboardMarkup:
         return InlineKeyboardMarkup(inline_keyboard=currency_btns)
     else:
         currency_btns.insert(4, [InlineKeyboardButton(text="🙋 Последняя выбранная валюта", callback_data='no_action')])
-        currency_btns.insert(5, [InlineKeyboardButton(text=f"{await get_currency(user_id)} -> {last_used_currency}", callback_data='last_used')])
+        currency_btns.insert(5, [InlineKeyboardButton(text=f"{last_used_currency} -> {await get_currency(user_id)}", callback_data='last_used')])
         return InlineKeyboardMarkup(inline_keyboard=currency_btns)
 
 
