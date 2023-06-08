@@ -14,12 +14,14 @@ async def start_db(user_id):
 
 
 async def get_username(user_id):
-    res = cursor.execute(f"SELECT username FROM users WHERE user_id = {user_id}").fetchall()
+    res = cursor.execute(
+        f"SELECT username FROM users WHERE user_id = {user_id}").fetchall()
     return res[0][0]
 
 
 async def get_currency(user_id):
-    res = cursor.execute(f"SELECT saved_currency FROM users WHERE user_id = {user_id}").fetchall()
+    res = cursor.execute(
+        f"SELECT saved_currency FROM users WHERE user_id = {user_id}").fetchall()
     return res[0][0]
 
 
@@ -33,3 +35,15 @@ async def update_currency(user_id, currency):
     cursor.execute(
         f'UPDATE users SET saved_currency = "{currency}" WHERE user_id = {user_id}')
     conn.commit()
+
+
+async def update_last_used_currency(user_id, currency):
+    cursor.execute(
+        f'UPDATE users SET last_used_currency = "{currency}" WHERE user_id = {user_id}')
+    conn.commit()
+
+
+async def get_last_used_currency(user_id):
+    res = cursor.execute(
+        f"SELECT last_used_currency FROM users WHERE user_id = {user_id}").fetchall()
+    return res[0][0]

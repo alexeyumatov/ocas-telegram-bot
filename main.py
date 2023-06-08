@@ -4,7 +4,7 @@ import asyncio
 from aiogram import Bot, Dispatcher
 
 from src.middlewares.chat_action import ChatActionMiddleware
-from src.handlers import start_handler, settings_handler
+from src.handlers import start_handler, settings_handler, converter_handler
 
 
 async def main():
@@ -15,6 +15,7 @@ async def main():
 
     dp.include_router(start_handler.router)
     dp.include_router(settings_handler.router)
+    dp.include_router(converter_handler.router)
     
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)

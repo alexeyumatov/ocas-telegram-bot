@@ -5,7 +5,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 
 from src.keyboards.menu_keyboards import settings_kb, main_menu_kb
-from src.keyboards.registration_keyboard import currency_kb
+from src.keyboards.settings_keyboard import currency_kb
 from src.filters.registration_filters import NameInputCheck, CurrencyInputCheck
 from src.database.db import update_currency, update_username, get_username, get_currency
 
@@ -101,6 +101,18 @@ async def currency_input(message: Message, state: FSMContext):
 @router.message(Settings.changing_currency_by_hand)
 async def wrong_currency_input(message: Message):
     await message.answer(text="Ввод валюты некоректен! Попробуйте еще раз.")
+
+
+@router.callback_query(Text("back_to_settings", ignore_case=True))
+async def settings_menu(callback: CallbackQuery, bot: Bot):
+    await bot.edit_message_text(text="Вы в меню настроек.\n\n"
+                                "<b>Ваши данные:</b>\n"
+                                f"👤 Имя\t-\t{await get_username(callback.from_user.id)}\n"
+                                f"💵 Валюта по умолчанию\t-\t{await get_currency(callback.from_user.id)}",
+                                chat_id=callback.from_user.id,
+                                message_id=callback.message.message_id,
+                                reply_markup=settings_kb)
+    await callback.answer()
 
 
 @router.callback_query(Text("back_to_menu", ignore_case=True))
