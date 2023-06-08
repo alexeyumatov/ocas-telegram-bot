@@ -15,6 +15,7 @@ currency_btns = [[InlineKeyboardButton(text="💸 Популярные валю�
                    InlineKeyboardButton(text="🇬🇧 Фунты", callback_data="curr_GBP"),
                    InlineKeyboardButton(text="🇨🇳 Юани", callback_data="curr_CNY")],
                    [InlineKeyboardButton(text="🇺🇦 Гривни", callback_data="curr_UAH"),
-                    InlineKeyboardButton(text="🇧🇾 Бел. рубль", callback_data="curr_BYN")]]
+                    InlineKeyboardButton(text="🇧🇾 Бел. рубль", callback_data="curr_BYN")],
+                   [InlineKeyboardButton(text="⌨️ Ввести вручную", callback_data="curr_byhand")]]
 
 currency_kb = InlineKeyboardMarkup(inline_keyboard=currency_btns)

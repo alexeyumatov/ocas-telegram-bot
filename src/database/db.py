@@ -18,6 +18,11 @@ async def get_username(user_id):
     return res[0][0]
 
 
+async def get_currency(user_id):
+    res = cursor.execute(f"SELECT saved_currency FROM users WHERE user_id = {user_id}").fetchall()
+    return res[0][0]
+
+
 async def update_username(user_id, username):
     cursor.execute(
         f'UPDATE users SET username = "{username}" WHERE user_id = {user_id}')
