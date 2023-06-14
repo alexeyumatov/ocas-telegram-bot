@@ -12,10 +12,12 @@ from src.database.db import (get_currency, update_last_used_currency, get_last_u
 from src.keyboards.converter_keyboard import make_keyboard, convert_kb, server_error_kb
 from src.functions.converter_func import convert
 from src.filters.registration_filters import CurrencyInputCheck
+from src.middlewares.ban_middleware import CheckIfBanned
 
 
 router = Router()
 flags = {"long_operation": "typing"}
+router.callback_query.middleware(CheckIfBanned())
 
 
 class CurrencyChoice(StatesGroup):
@@ -25,26 +27,12 @@ class CurrencyChoice(StatesGroup):
 
 @router.callback_query(Text('converter', ignore_case=True))
 async def converter_cmd(callback: CallbackQuery, bot: Bot, state: FSMContext):
-    if await get_user_state(callback.from_user.id):
-        now_time = datetime.now().strftime("%H:%M")
-        now_time = datetime.strptime(now_time, "%H:%M")
-        banned_time = datetime.strptime(await get_banned_time(callback.from_user.id), "%H:%M")
-        period = now_time - banned_time
-        if period.seconds >= 600:
-            await ban_user(callback.from_user.id, unban=True)
-            await set_banned_time(callback.from_user.id, None, delete=True)
-    if not await get_user_state(callback.from_user.id):
-        await bot.edit_message_text(text="Выберите валюту, в которую будет переведена ваша валюта по умолчанию "
-                                    f"(<b><i>{await get_currency(callback.from_user.id)}</i></b>)",
-                                    chat_id=callback.from_user.id,
-                                    message_id=callback.message.message_id,
-                                    reply_markup=await make_keyboard(callback.from_user.id))
-        await state.set_state(CurrencyChoice.choose_currency_callback)
-    else:
-        await bot.edit_message_text(text="Вы привысили лимит запросов. Вы заблокированы на 10 минут.",
-                                    chat_id=callback.from_user.id,
-                                    message_id=callback.message.message_id,
-                                    reply_markup=server_error_kb)
+    await bot.edit_message_text(text="Выберите валюту, в которую будет переведена ваша валюта по умолчанию "
+                                f"(<b><i>{await get_currency(callback.from_user.id)}</i></b>)",
+                                chat_id=callback.from_user.id,
+                                message_id=callback.message.message_id,
+                                reply_markup=await make_keyboard(callback.from_user.id))
+    await state.set_state(CurrencyChoice.choose_currency_callback)
     await callback.answer()
 
 
