@@ -5,7 +5,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 
 from src.keyboards.menu_keyboards import settings_kb, main_menu_kb
-from src.keyboards.settings_keyboard import currency_kb
+from src.keyboards.settings_keyboard import currency_kb, stop_action_kb
 from src.filters.registration_filters import NameInputCheck, CurrencyInputCheck
 from src.database.db import update_currency, update_username, get_username, get_currency
 
@@ -39,7 +39,8 @@ async def change_data(callback: CallbackQuery, bot: Bot, state: FSMContext):
         await state.set_state(Settings.changing_name)
         await bot.edit_message_text(text="Введите ваше новое имя:",
                                     chat_id=callback.from_user.id,
-                                    message_id=callback.message.message_id)
+                                    message_id=callback.message.message_id,
+                                    reply_markup=stop_action_kb)
     elif action == "currency":
         await state.set_state(Settings.changing_currency_callback)
         await bot.edit_message_text(text="Выберите валюту, которая будет использоваться по умолчанию:",

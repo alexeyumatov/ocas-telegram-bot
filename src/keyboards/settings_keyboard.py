@@ -14,3 +14,7 @@ currency_btns = [[InlineKeyboardButton(text="💸 Предложенные ва�
                    [InlineKeyboardButton(text="⏪ В меню настроек", callback_data="back_to_settings")]]
 
 currency_kb = InlineKeyboardMarkup(inline_keyboard=currency_btns)
+
+stop_action_btns = [[InlineKeyboardButton(text="⏪ Отменить действие", callback_data="back_to_settings")]]
+
+stop_action_kb = InlineKeyboardMarkup(inline_keyboard=stop_action_btns)
