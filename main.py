@@ -21,7 +21,7 @@ async def main():
     dp.include_router(converter_handler.router)
     
     scheduler = AsyncIOScheduler(timezone="Europe/Moscow")
-    scheduler.add_job(clear_requests, trigger='interval', seconds=600)
+    scheduler.add_job(clear_requests, trigger='interval', seconds=60)
     scheduler.start()
     
     await clear_number_of_requests()
